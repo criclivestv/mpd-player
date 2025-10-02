@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ClearKey DASH Player</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.9.2/shaka-player.compiled.js"></script>
+
+  <style>
+
+    html,body {margin:0;background:#000;height:100%;}
+
+    #video {width:100%;height:100%;background:#000;}
+
+  </style>
+
+</head>
+
+<body>
+
+<video id="video" controls autoplay></video>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', async () => {
+
+    const video = document.getElementById('video');
+
+    const player = new shaka.Player(video);
+
+    // ClearKey DRM config
+
+    player.configure({
+
+      drm: {
+
+        clearKeys: {
+
+          // keyID : key
+
+          'a6dfc4f17d70d8d07639659193f03b25': '893eacfabe386144b81733d622a7ad17'
+
+        }
+
+      }
+
+    });
+
+    try {
+
+      await player.load('https://live2.shoq.com.pk/live/eds/ICC_Women_World_Cup_2025/DASH/ICC_Women_World_Cup_2025.mpd');
+
+      console.log('Video loaded!');
+
+    } catch (err) {
+
+      console.error('Error loading video', err);
+
+    }
+
+  });
+
+</script>
+
+</body>
+
+</html>
