@@ -37,7 +37,6 @@
   <video id="video"
          autoplay
          playsinline
-         controls
          class="shaka-video"></video>
   <div class="shaka-controls-container"></div>
 </div>
@@ -49,13 +48,15 @@
     const video = document.getElementById('video');
     const container = document.getElementById('player-container');
     const player = new shaka.Player(video);
+
+    // Shaka UI attach
     new shaka.ui.Overlay(player, container, video);
 
-    // DRM কনফিগারেশন: এখানে নিজের ClearKey বসান
+    // DRM ClearKey config
     player.configure({
       drm: {
         clearKeys: {
-                'a6dfc4f17d70d8d07639659193f03b25': '893eacfabe386144b81733d622a7ad17'
+          'a6dfc4f17d70d8d07639659193f03b25': '893eacfabe386144b81733d622a7ad17'
         }
       }
     });
