@@ -1,73 +1,76 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DASH Player</title>
 
-  <meta charset="utf-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>ClearKey DASH Player</title>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.9.2/shaka-player.compiled.js"></script>
+  <!-- Shaka Player UI CSS -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/controls.min.css">
 
   <style>
-
-    html,body {margin:0;background:#000;height:100%;}
-
-    #video {width:100%;height:100%;background:#000;}
-
+    body {
+      margin: 0;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #player-container {
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 16/9;
+      background: black;
+      position: relative;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+    }
   </style>
-
 </head>
-
 <body>
 
-<video id="video" controls autoplay></video>
+<div id="player-container" class="shaka-video-container">
+  <video id="video"
+         autoplay
+         playsinline
+         controls
+         class="shaka-video"></video>
+  <div class="shaka-controls-container"></div>
+</div>
 
+<!-- Shaka Player -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js"></script>
 <script>
-
   document.addEventListener('DOMContentLoaded', async () => {
-
     const video = document.getElementById('video');
-
+    const container = document.getElementById('player-container');
     const player = new shaka.Player(video);
+    new shaka.ui.Overlay(player, container, video);
 
-    // ClearKey DRM config
-
+    // DRM কনফিগারেশন: এখানে নিজের ClearKey বসান
     player.configure({
-
       drm: {
-
         clearKeys: {
-
-          // keyID : key
-
-          'a6dfc4f17d70d8d07639659193f03b25': '893eacfabe386144b81733d622a7ad17'
-
+                'a6dfc4f17d70d8d07639659193f03b25': '893eacfabe386144b81733d622a7ad17'
         }
-
       }
-
     });
 
+    const manifestUri =
+      'https://live2.shoq.com.pk/live/eds/ICC_Women_World_Cup_2025/DASH/ICC_Women_World_Cup_2025.mpd';
+
     try {
-
-      await player.load('https://live2.shoq.com.pk/live/eds/ICC_Women_World_Cup_2025/DASH/ICC_Women_World_Cup_2025.mpd');
-
-      console.log('Video loaded!');
-
-    } catch (err) {
-
-      console.error('Error loading video', err);
-
+      await player.load(manifestUri);
+      console.log('Stream loaded');
+    } catch (error) {
+      console.error('Error loading stream:', error);
     }
-
   });
-
 </script>
 
 </body>
-
 </html>
