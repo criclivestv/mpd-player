@@ -69,25 +69,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Attach UI overlay
     const ui = new shaka.ui.Overlay(player, container, video);
 
-    // Configure control panel
+    // Configure control panel (time/duration অপশন রিমুভ করা হয়েছে)
     ui.configure({
         controlPanelElements: [
             'play_pause',       // Left
             'mute',
             'volume',
-            'time_and_duration',
             'spacer',
             'settings',         // Right: gear icon
             'quality',
             'playback_rate',
-            'captions',
             'picture_in_picture',
             'fullscreen'
         ],
         settingsMenuElements: [
             'quality',
-            'playback_rate',
-            'captions'
+            'playback_rate'
         ]
     });
 
