@@ -25,9 +25,29 @@
       background: black;
       position: relative;
     }
-    video {
+    video.shaka-video {
       width: 100%;
       height: 100%;
+      background: transparent !important; /* ভিডিওর কালো ব্যাকগ্রাউন্ড সরানো */
+    }
+    /* Overlay ব্যাকগ্রাউন্ড সরানো */
+    .shaka-controls-container,
+    .shaka-play-button-container,
+    .shaka-overlay-play-button {
+      background: transparent !important;
+    }
+    /* লাল রঙের প্রগতি বার */
+    .shaka-seek-bar-container {
+      background-color: rgba(255,0,0,0.3) !important;
+    }
+    .shaka-seek-bar {
+      background-color: red !important;
+    }
+    .shaka-range-element__value {
+      background-color: red !important;
+    }
+    .shaka-controls-button-panel > button {
+      color: white !important;
     }
   </style>
 </head>
@@ -41,7 +61,7 @@
   <div class="shaka-controls-container"></div>
 </div>
 
-<!-- Shaka Player -->
+<!-- Shaka Player JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
@@ -49,10 +69,10 @@
     const container = document.getElementById('player-container');
     const player = new shaka.Player(video);
 
-    // Shaka UI attach
+    // Shaka UI Overlay attach
     new shaka.ui.Overlay(player, container, video);
 
-    // DRM ClearKey config
+    // DRM ClearKey configure
     player.configure({
       drm: {
         clearKeys: {
@@ -61,14 +81,15 @@
       }
     });
 
+    // DASH Manifest
     const manifestUri =
       'https://live2.shoq.com.pk/live/eds/ICC_Women_World_Cup_2025/DASH/ICC_Women_World_Cup_2025.mpd';
 
     try {
       await player.load(manifestUri);
-      console.log('Stream loaded');
+      console.log('✅ Stream loaded successfully');
     } catch (error) {
-      console.error('Error loading stream:', error);
+      console.error('❌ Error loading stream:', error);
     }
   });
 </script>
