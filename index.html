@@ -28,15 +28,14 @@
     video.shaka-video {
       width: 100%;
       height: 100%;
-      background: transparent !important; /* ভিডিওর কালো ব্যাকগ্রাউন্ড সরানো */
-    }
-    /* Overlay ব্যাকগ্রাউন্ড সরানো */
-    .shaka-controls-container,
-    .shaka-play-button-container,
-    .shaka-overlay-play-button {
       background: transparent !important;
     }
-    /* লাল রঙের প্রগতি বার */
+    .shaka-controls-container {
+      background: transparent !important;
+    }
+    .shaka-controls-button-panel > button {
+      color: white !important;
+    }
     .shaka-seek-bar-container {
       background-color: rgba(255,0,0,0.3) !important;
     }
@@ -45,9 +44,6 @@
     }
     .shaka-range-element__value {
       background-color: red !important;
-    }
-    .shaka-controls-button-panel > button {
-      color: white !important;
     }
   </style>
 </head>
@@ -69,8 +65,19 @@
     const container = document.getElementById('player-container');
     const player = new shaka.Player(video);
 
-    // Shaka UI Overlay attach
-    new shaka.ui.Overlay(player, container, video);
+    // UI Overlay configuration
+    const ui = new shaka.ui.Overlay(player, container, video);
+    const controls = ui.getControls();
+
+    ui.configure({
+      controlPanelElements: [
+        'play_pause', 'mute', 'volume', 'time_and_duration', 'spacer',
+        'overflow_menu', 'picture_in_picture', 'fullscreen'
+      ],
+      settingsMenuElements: [
+        'quality', 'playback_rate'
+      ]
+    });
 
     // DRM ClearKey configure
     player.configure({
@@ -78,7 +85,8 @@
         clearKeys: {
           'a6dfc4f17d70d8d07639659193f03b25': '893eacfabe386144b81733d622a7ad17'
         }
-      }
+      },
+      abr: { enabled: true } // Auto resolution default
     });
 
     // DASH Manifest
