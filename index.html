@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DASH Player Full Left/Right</title>
+<title>Dooplay Shaka Player Embed</title>
 
 <!-- Shaka Player UI CSS -->
 <link rel="stylesheet"
@@ -23,7 +23,8 @@ body, html {
 
 #player-container {
     width: 100%;
-    height: 100%;
+    max-width: 100%;
+    aspect-ratio: 16/9;
     position: relative;
     background: black;
 }
@@ -35,14 +36,20 @@ video.shaka-video {
     background: black;
 }
 
+/* Ensure Shaka controls visible above theme elements */
 .shaka-controls-container {
-    background: transparent;
+    z-index: 9999 !important;
+    background: transparent !important;
+}
+
+.shaka-controls-button-panel button {
+    display: inline-block !important;
 }
 </style>
 </head>
 <body>
 
-<div id="player-container" class="shaka-video-container">
+<div id="player-container">
     <video id="video" autoplay playsinline class="shaka-video"></video>
     <div class="shaka-controls-container"></div>
 </div>
@@ -62,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Attach UI overlay
     const ui = new shaka.ui.Overlay(player, container, video);
 
-    // Configure controls
+    // Configure control panel
     ui.configure({
         controlPanelElements: [
             'play_pause',       // Left
@@ -84,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ]
     });
 
-    // DRM ClearKey configure
+    // DRM ClearKey (example)
     player.configure({
         drm: {
             clearKeys: {
@@ -94,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         abr: { enabled: true } // Auto resolution
     });
 
-    // DASH Manifest
+    // DASH manifest
     const manifestUri = 'https://live2.shoq.com.pk/live/eds/ICC_Women_World_Cup_2025/DASH/ICC_Women_World_Cup_2025.mpd';
 
     try {
